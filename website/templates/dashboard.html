@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,18 +22,15 @@
 <body>
     <div class="mt-5 container">
         <div class="text-center">
-            <h1>Admin Login</h1>
-            <form action="/login" method="POST">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+            <h1>Dashboard</h1>
+            <h3>Welcome {{user['_id']}}</h3>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+            <br>
+            <div class="btn-group mt-5" role="group" aria-label="Default button group">
+                {% for s in user['access'] %}
+                    <button type="button" class="btn btn-dark">{{s}}</button>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>

@@ -1,1 +1,4 @@
-temp
+temp/
+website/env
+website/.env
+__pychache__

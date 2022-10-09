@@ -25,7 +25,7 @@ lons = [77.2142, 77.2255, 77.1181, 77.2026, 77.1929, 77.2175, 77.2190, 77.2081, 
 stations = ["station_1", "station_2", "station_3", "station_4", "station_5", "station_6", "station_7", "station_8", "station_9", "station_10"]
 
 def closest(lat, lon):
-    shortest = 1000
+    shortest = math.sqrt((lat - lats[0])**2 + (lon - lons[0])**2)
     shortest_index = 0
     for i in range(len(lats)):
         dist = math.sqrt((lat - lats[i])**2 + (lon - lons[i])**2)
@@ -43,7 +43,8 @@ def add_report(lat, lon, speed, car_no):
         "lon": lon,
         "speed": speed,
         "car_no": car_no,
-        "time": datetime.now()
+        "resolved": False,
+        "time": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     })
 
 @app.route('/')
@@ -80,6 +81,23 @@ def reports_point():
         if station:
             if station in stations and station in session['user']['access']:
                 return render_template('reports.html', user=session['user'], reports=[i for i in reports.find({'station': station})], station=station)
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('index'))
+
+@app.route('/report')
+def report_point():
+    args = dict(request.args)
+    if 'lat' in args and 'lon' in args and 'speed' in args and 'car' in args:
+        add_report(float(args['lat']), float(args['lon']), float(args['speed']), args['car'])
+        return 'OK'
+    return 'ERROR'
+
+@app.route('/resolve')
+def resolve_point():
+    if 'user' in session:
+        id = request.args.get('id')
+        if id:
+            reports.update_one({'_id': id}, {'$set': {'resolved': True}})
         return redirect(url_for('dashboard'))
     return redirect(url_for('index'))
 

@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,26 +24,27 @@
         <div class="text-center">
             <h1>{{station}} reports</h1>
         </div>
-        <div class="row row-cols-1 row-cols-md-2 g-4 reports">
+        <div class="row row-cols-1 row-cols-md-2 g-4 reports mt-5">
             {% for report in reports %}
+            {% if not report['resolved'] %}
             <div class="col">
                 <div class="card text-bg-dark mb-3">
-                    <div class="card-header">Header</div>
                     <div class="card-body">
                         <p class="card-text">
                             <b>Report ID:</b> {{report['_id']}}<br>
                             <b>Car no.</b> {{report['car_no']}}<br>
                             <b>Latitude:</b> {{report['lat']}}<br>
                             <b>Longitude:</b> {{report['lon']}}<br>
-                            <b>Reported for:</b> {{report['reported_for']}}<br>
                             <b>Speed:</b> {{report['speed']}}<br>
                         </p>
+                        <a href="/resolve?id={{report['_id']}}" class="btn btn-success">Mark As Resolve</a>                    
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">{{report['timestamp']}}</small>
+                        <small class="text-muted">{{report['time']}}</small>
                     </div>                
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </div>

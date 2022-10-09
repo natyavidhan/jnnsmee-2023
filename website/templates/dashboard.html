@@ -28,7 +28,7 @@
             <br>
             <div class="btn-group mt-5" role="group" aria-label="Default button group">
                 {% for s in user['access'] %}
-                    <button type="button" class="btn btn-dark">{{s}}</button>
+                    <button type="button" class="btn btn-dark" onclick="window.location.href='reports?station={{s}}'">{{s}}</button>
                 {% endfor %}
             </div>
         </div>

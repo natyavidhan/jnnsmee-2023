@@ -3,6 +3,9 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 import os
+import math
+from datetime import datetime
+from uuid import uuid4
 
 if os.path.isfile('.env'):
     load_dotenv()
@@ -15,10 +18,33 @@ app.secret_key = os.environ.get('SECRET_KEY')
 db = MongoClient(os.environ.get('MONGO_URI'))['overspeed']
 admins = db['admins']
 querries = db['querries']
+reports = db['reports']
 
 lats = [28.6300, 28.6309, 28.7087, 28.6849, 28.6524, 28.6499, 28.6557, 28.6460, 28.5990, 28.6924]
 lons = [77.2142, 77.2255, 77.1181, 77.2026, 77.1929, 77.2175, 77.2190, 77.2081, 77.1241, 77.1738]
 stations = ["station_1", "station_2", "station_3", "station_4", "station_5", "station_6", "station_7", "station_8", "station_9", "station_10"]
+
+def closest(lat, lon):
+    shortest = 1000
+    shortest_index = 0
+    for i in range(len(lats)):
+        dist = math.sqrt((lat - lats[i])**2 + (lon - lons[i])**2)
+        if dist < shortest:
+            shortest = dist
+            shortest_index = i
+    return stations[shortest_index]
+
+def add_report(lat, lon, speed, car_no):
+    station = closest(lat, lon)
+    reports.insert_one({
+        "_id": str(uuid4()),
+        "station": station,
+        "lat": lat,
+        "lon": lon,
+        "speed": speed,
+        "car_no": car_no,
+        "time": datetime.now()
+    })
 
 @app.route('/')
 def index():
@@ -45,6 +71,16 @@ def logout():
 def dashboard():
     if 'user' in session:
         return render_template('dashboard.html', user=session['user'])
+    return redirect(url_for('index'))
+
+@app.route('/reports')
+def reports_point():
+    if 'user' in session:
+        station = request.args.get('station')
+        if station:
+            if station in stations and station in session['user']['access']:
+                return render_template('reports.html', user=session['user'], reports=[i for i in reports.find({'station': station})], station=station)
+        return redirect(url_for('dashboard'))
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

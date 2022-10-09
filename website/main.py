@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from pymongo import MongoClient
 from dotenv import load_dotenv
+import pytz
 
 import os
 import math
@@ -44,7 +45,7 @@ def add_report(lat, lon, speed, car_no):
         "speed": speed,
         "car_no": car_no,
         "resolved": False,
-        "time": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        "time": datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d/%m/%Y %H:%M:%S")
     })
 
 @app.route('/')

@@ -2,6 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <SoftwareSerial.h>
 #include "TinyGPS++.h"
+#include "LiquidCrystal_I2C.h"
 
 const char *ssid = "JioFiber-ooCh7";
 const char *password = "subal1234";
@@ -25,31 +26,6 @@ float Time;
 TinyGPSPlus gps;
 SoftwareSerial serial_connection(5, 6);
 
-void setup()
-{
-    delay(1000);
-    Serial.begin(115200);
-    WiFi.mode(WIFI_OFF);
-    delay(1000);
-    WiFi.mode(WIFI_STA);
-
-    WiFi.begin(ssid, password);
-    Serial.println("");
-
-    Serial.print("Connecting");
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.print(".");
-    }
-
-    Serial.println("");
-    Serial.print("Connected to ");
-    Serial.println(ssid);
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
-}
-
 void coor()
 {
     while (serial_connection.available())
@@ -60,14 +36,16 @@ void coor()
     {
         mylat = (gps.location.lat(), 6);
         mylon = (gps.location.lng(), 6);
+        Serial.println(mylat);
+        Serial.println(mylon);
     }
 }
 
 void msg(float speed)
 {
-    //  coor();
-    mylat = 28.6500;
-    mylon = 77.2500;
+      coor();
+//    mylat = 28.6500;
+//    mylon = 77.2500;
     WiFiClientSecure httpsClient;
     Serial.printf("Using fingerprint '%s'\n", fingerprint);
     httpsClient.setFingerprint(fingerprint);
@@ -90,8 +68,14 @@ void msg(float speed)
     {
         Serial.println("Connected to web");
     }
-
-    char *Link = "/report?car=" + car + "&lat=" + mylat + "&lon=" + mylon + "&speed=" + speed;
+    String Link  = "/report?car=" ;
+    Link+= car ;
+    Link+= "&lat="; 
+    Link+= mylat ;
+    Link+= "&lon="; 
+    Link+= mylon ;
+    Link+= "&speed=" ;
+    Link+= speed;
 
     Serial.print("requesting URL: ");
     Serial.println(host + Link);
@@ -126,31 +110,55 @@ void msg(float speed)
     delay(2000);
 }
 
+void setup()
+{
+    delay(1000);
+    Serial.begin(115200);
+    WiFi.mode(WIFI_OFF);
+    delay(1000);
+    WiFi.mode(WIFI_STA);
+
+    WiFi.begin(ssid, password);
+    Serial.println("");
+
+    Serial.print("Connecting");
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("");
+    Serial.print("Connected to ");
+    Serial.println(ssid);
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+    msg(72);
+}
+
 void loop()
 {
-    newRead = digitalRead(IRSENSOR_PIN);
-    if (newRead == BLACK && newRead != lastRead)
-    {
-        //    Serial.print("Black ");
-        lastRead = newRead;
-    }
-    if (newRead == WHITE && newRead != lastRead)
-    {
-        //    Serial.print("White ");
-        newTime = millis();
-        lastRead = newRead;
-        Time = (newTime - oldTime);
-        oldTime = millis();
-        float speed = (28 / Time) * 36;
-        Serial.print("Speed: " + speed);
-        if (speed > 50)
-        {
-            Serial.println("Overspeeding");
-            msg(speed);
-        }
-        else
-        {
-            Serial.println("Normal Speed");
-        }
-    }
+//    newRead = digitalRead(IRSENSOR_PIN);
+//    if (newRead == BLACK && newRead != lastRead)
+//    {
+//        lastRead = newRead;
+//    }
+//    if (newRead == WHITE && newRead != lastRead)
+//    {
+//        newTime = millis();
+//        lastRead = newRead;
+//        Time = (newTime - oldTime);
+//        oldTime = millis();
+//        float speed = (28 / Time) * 36;
+//        Serial.print("Speed: " + speed);
+//        if (speed > 50)
+//        {
+//            Serial.println("Overspeeding");
+//            msg(speed);
+//        }
+//        else
+//        {
+//            Serial.println("Normal Speed");
+//        }
+//    }
 }

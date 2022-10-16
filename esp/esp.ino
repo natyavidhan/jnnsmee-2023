@@ -13,9 +13,19 @@ float mylat;
 float mylon;
 float D[10];
 
+#define IRSENSOR_PIN 4
+long newTime = millis();
+long oldTime = millis();
+bool lastRead = 0;
+bool newRead = 0;
+#define BLACK 0
+#define WHITE 1
+float Time;
+float sped;
+
 TinyGPSPlus gps;
-SoftwareSerial serial_connection (5, 6);
-//SoftwareSerial sped (5, 6);
+SoftwareSerial serial_connection(14, 12);
+// SoftwareSerial sped (5, 6);
 
 void coor()
 {
@@ -31,7 +41,7 @@ void coor()
 
 void msg(float speed)
 {
-      coor();
+    coor();
 //    mylat = 28.6500;
 //    mylon = 77.2500;
     WiFiClientSecure httpsClient;
@@ -56,21 +66,21 @@ void msg(float speed)
     {
         Serial.println("Connected to web");
     }
-    String Link  = "/report?car=" ;
-    Link+= car ;
-    Link+= "&lat="; 
-    Link+= mylat ;
-    Link+= "&lon="; 
-    Link+= mylon ;
-    Link+= "&speed=" ;
-    Link+= speed;
+    String Link = "/report?car=";
+    Link += car;
+    Link += "&lat=";
+    Link += mylat;
+    Link += "&lon=";
+    Link += mylon;
+    Link += "&speed=";
+    Link += speed;
 
     Serial.print("requesting URL: ");
     Serial.println(host + Link);
 
     httpsClient.print(String("GET ") + Link + " HTTP/1.1\r\n" +
-                        "Host: " + host + "\r\n" +
-                        "Connection: close\r\n\r\n");
+                      "Host: " + host + "\r\n" +
+                      "Connection: close\r\n\r\n");
 
     Serial.println("request sent");
 
@@ -91,19 +101,19 @@ void msg(float speed)
     {
         line = httpsClient.readStringUntil('\n');
         Serial.println(line);
-    } 
+    }
     Serial.println("==========");
     Serial.println("closing connection");
 
-    delay(2000);
+    delay(10000);
 }
 
 void setup()
 {
-    delay(1000);
+    pinMode(IRSENSOR_PIN, INPUT);
     Serial.begin(115200);
     WiFi.mode(WIFI_OFF);
-    delay(1000);
+    delay(500);
     WiFi.mode(WIFI_STA);
 
     WiFi.begin(ssid, password);
@@ -121,18 +131,37 @@ void setup()
     Serial.println(ssid);
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
-    msg(72);
+    // msg(72);
 }
 
-static void smartdelay_gps(unsigned long ms){
-  unsigned long start = millis();
-  do 
-  {
-    while (serial_connection.available())
-      gps.encode(serial_connection.read());
-  } while (millis() - start < ms);
+static void smartdelay_gps(unsigned long ms)
+{
+    unsigned long start = millis();
+    do
+    {
+        while (serial_connection.available())
+            gps.encode(serial_connection.read());
+    } while (millis() - start < ms);
 }
 
 void loop()
+{
+    newRead = digitalRead(IRSENSOR_PIN);
+    if (newRead == BLACK && newRead != lastRead)
     {
+        lastRead = newRead;
+    }
+    else if (newRead == WHITE && newRead != lastRead)
+    {
+        newTime = millis();
+        lastRead = newRead;
+        Time = (newTime - oldTime);
+        oldTime = millis();
+        sped = (6 / (Time / 1000));
+        if (sped > 50)
+        {
+            Serial.println(sped);
+            msg(sped);
+        }
+    }
 }

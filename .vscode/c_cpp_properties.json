@@ -19,6 +19,7 @@
             "includePath": [
                 "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\tools\\sdk\\include",
                 "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\tools\\sdk\\lwip2\\include",
+                "d:\\ArduinoOutput\\core",
                 "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\cores\\esp8266",
                 "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\variants\\generic",
                 "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\xtensa-lx106-elf\\include\\c++\\10.2.0",
@@ -26,13 +27,7 @@
                 "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\xtensa-lx106-elf\\include\\c++\\10.2.0\\backward",
                 "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\lib\\gcc\\xtensa-lx106-elf\\10.2.0\\include",
                 "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\lib\\gcc\\xtensa-lx106-elf\\10.2.0\\include-fixed",
-                "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\xtensa-lx106-elf\\include",
-                "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\libraries",
-                "C:/Users/subal/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.0.0/libraries/SoftwareSerial/src",
-                "C:/Users/subal/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.0.0/libraries/ESP8266HTTPClient/src",
-                "C:/Users/subal/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.0.0/libraries/ESP8266WiFi/src",
-                "${workspaceFolder}/esp",
-                "C:/Users/subal/AppData/Local/Arduino15/packages/esp8266/hardware/esp8266/3.0.0/libraries/Wire"
+                "c:\\users\\subal\\appdata\\local\\arduino15\\packages\\esp8266\\tools\\xtensa-lx106-elf-gcc\\3.0.0-newlib4.0.0-gnu23-48f7b08\\xtensa-lx106-elf\\include"
             ],
             "forcedInclude": [
                 "C:\\Users\\subal\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.0\\cores\\esp8266\\Arduino.h"

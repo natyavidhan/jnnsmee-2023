@@ -2,7 +2,6 @@
 #include <ESP8266HTTPClient.h>
 #include <SoftwareSerial.h>
 #include "TinyGPS++.h"
-#include "LiquidCrystal_I2C.h"
 
 const char *ssid = "JioFiber-ooCh7";
 const char *password = "subal1234";
@@ -14,25 +13,14 @@ float mylat;
 float mylon;
 float D[10];
 
-#define IRSENSOR_PIN 4
-long newTime = millis();
-long oldTime = millis();
-bool lastRead = 0;
-bool newRead = 0;
-#define BLACK 0
-#define WHITE 1
-float Time;
-
 TinyGPSPlus gps;
-SoftwareSerial serial_connection(5, 6);
+SoftwareSerial serial_connection (5, 6);
+//SoftwareSerial sped (5, 6);
 
 void coor()
 {
-    while (serial_connection.available())
-    {
-        gps.encode(serial_connection.read());
-    }
-    if (gps.location.isUpdated())
+    smartdelay_gps(1000);
+    if (gps.location.isValid())
     {
         mylat = (gps.location.lat(), 6);
         mylon = (gps.location.lng(), 6);
@@ -103,7 +91,7 @@ void msg(float speed)
     {
         line = httpsClient.readStringUntil('\n');
         Serial.println(line);
-    }
+    } 
     Serial.println("==========");
     Serial.println("closing connection");
 
@@ -136,29 +124,15 @@ void setup()
     msg(72);
 }
 
+static void smartdelay_gps(unsigned long ms){
+  unsigned long start = millis();
+  do 
+  {
+    while (serial_connection.available())
+      gps.encode(serial_connection.read());
+  } while (millis() - start < ms);
+}
+
 void loop()
-{
-//    newRead = digitalRead(IRSENSOR_PIN);
-//    if (newRead == BLACK && newRead != lastRead)
-//    {
-//        lastRead = newRead;
-//    }
-//    if (newRead == WHITE && newRead != lastRead)
-//    {
-//        newTime = millis();
-//        lastRead = newRead;
-//        Time = (newTime - oldTime);
-//        oldTime = millis();
-//        float speed = (28 / Time) * 36;
-//        Serial.print("Speed: " + speed);
-//        if (speed > 50)
-//        {
-//            Serial.println("Overspeeding");
-//            msg(speed);
-//        }
-//        else
-//        {
-//            Serial.println("Normal Speed");
-//        }
-//    }
+    {
 }

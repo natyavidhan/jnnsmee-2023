@@ -47,6 +47,7 @@ def add_report(lat, lon, speed, car_no):
         "resolved": False,
         "time": datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d/%m/%Y %H:%M:%S")
     })
+    return station
 
 @app.route('/')
 def index():
@@ -89,8 +90,8 @@ def reports_point():
 def report_point():
     args = dict(request.args)
     if 'lat' in args and 'lon' in args and 'speed' in args and 'car' in args:
-        add_report(float(args['lat']), float(args['lon']), float(args['speed']), args['car'])
-        return 'OK'
+        st = add_report(float(args['lat']), float(args['lon']), float(args['speed']), args['car'])
+        return 'OK: reported to ' + st
     return 'ERROR'
 
 @app.route('/resolve')

@@ -8,7 +8,7 @@ const char *password = "subal1234";
 const char *car = "DL5SAB9876";
 const char *host = "jnnsmee-2022.vercel.app";
 const int httpsPort = 443;
-const char *fingerprint = "D0 B6 8E BB EC 26 22 D9 2A BA D8 7F 62 E6 1A 6E 55 33 89 DE";
+const char *fingerprint = "AA C0 E2 66 DB D8 C5 9B E8 A7 2C 66 00 0D DF D2 4E D6 86 B0";
 float mylat;
 float mylon;
 float D[10];
@@ -93,16 +93,6 @@ void msg(float speed)
             break;
         }
     }
-
-    Serial.println("reply was:");
-    Serial.println("==========");
-    String line;
-    while (httpsClient.available())
-    {
-        line = httpsClient.readStringUntil('\n');
-        Serial.println(line);
-    }
-    Serial.println("==========");
     Serial.println("closing connection");
 
     delay(10000);
@@ -158,7 +148,8 @@ void loop()
         Time = (newTime - oldTime);
         oldTime = millis();
         sped = (6 / (Time / 1000));
-        if (sped > 50)
+        Serial.println(sped);
+        if (sped > 50 && sped < 1000)
         {
             Serial.println(sped);
             msg(sped);

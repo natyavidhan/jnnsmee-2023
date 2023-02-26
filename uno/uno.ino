@@ -1,4 +1,5 @@
 #include "LiquidCrystal_I2C.h"
+#include <SoftwareSerial.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -12,6 +13,7 @@ bool newRead = 0;
 #define WHITE 1
 float Time;
 float sped;
+SoftwareSerial serial_connection(14, 12);
 
 void setup () {
   lcd.begin();

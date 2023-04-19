@@ -42,8 +42,8 @@ void coor()
 void msg(float speed)
 {
     coor();
-//    mylat = 28.6500;
-//    mylon = 77.2500;
+    mylat = 28.6500;
+    mylon = 77.2500;
     WiFiClientSecure httpsClient;
     Serial.printf("Using fingerprint '%s'\n", fingerprint);
     httpsClient.setFingerprint(fingerprint);

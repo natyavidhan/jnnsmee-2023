@@ -3,10 +3,10 @@
 #include <SoftwareSerial.h>
 #include "TinyGPS++.h"
 
-const char *ssid = "JioFiber-ooCh7";
-const char *password = "subal1234";
-const char *car = "DL5SAB9876";
-const char *host = "jnnsmee-2022.vercel.app";
+const char *ssid = "";
+const char *password = "";
+const char *car = "";
+const char *host = "";
 const int httpsPort = 443;
 const char *fingerprint = "AA C0 E2 66 DB D8 C5 9B E8 A7 2C 66 00 0D DF D2 4E D6 86 B0";
 float mylat;
